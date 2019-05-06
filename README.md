@@ -17,18 +17,18 @@ Before you begin you must first install Terraform and the terraform-provider-lib
 
 ### Setup
 Clone Repository
-```
+```bash
 git clone https://github.com/2stacks/terraform-kbm.git
 cd terraform-kbm
 ```
 
-Create secrets variable file and add your SSH private key
-```
+Create secrets variable file and add your SSH public key
+```bash
 cp secret.auto.tfvars.example secret.auto.tfvars
 ```
 
-Deploy host with Terraform
-```
+Deploy libvirt guest with Terraform
+```bash
 terraform init
 terraform plan
 terraform apply
@@ -48,21 +48,21 @@ ip = [
 ]
 ```
 
-Log in to the host to verify the installation and to retrieve the dashboard token.
+Log in to the newly created guest to verify the installation and to retrieve the dashboard token.
 
 `ssh 192.168.122.139`
 
-```
+```bash
 kubectl get all --namespace=kube-system
 kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
 ```
 Copy the admin-user token then start the kube-proxy
-```
-kubect proxy
+```bash
+kubectl proxy
 ```
 
 From a seperate terminal window set up an ssh tunnel to the guest IP
-```
+```bash
 ssh -L 8001:127.0.0.1:8001 -N 192.168.122.139
 ```
 
