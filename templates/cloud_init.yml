@@ -1,0 +1,28 @@
+#cloud-config
+groups:
+  - ${user_name}
+  - docker
+users:
+  - name: ${user_name}
+    shell: /bin/bash
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    primary-group: ${user_name}
+    groups: sudo, docker
+    lock_passwd: true
+    ssh-authorized-keys:
+      - ${ssh_authorized-key}
+growpart:
+  mode: auto
+  devices: ['/']
+apt:
+  sources:
+    kubernetes:
+      keyid: "BA07F4FB"
+      source: "deb http://apt.kubernetes.io/ kubernetes-xenial main"
+package_upgrade: true
+packages:
+  - qemu-guest-agent
+  - docker.io
+  - kubelet
+  - kubeadm
+  - kubernetes-cni
